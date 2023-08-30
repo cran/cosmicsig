@@ -33,17 +33,22 @@ get_etiology <- function(mutation_type, sig_id) {
     )
   }
 
-  mm <- cosmicsig::etiology[[mutation_type]]
+  if (mutation_type == "SBS192") {
+    mm <- cosmicsig::COSMIC_v3.2$etiology$SBS192
+  } else {
+    mm <- cosmicsig::etiology[[mutation_type]]
+  }
+
   rr <- sapply(sig_id,
-    function(one.id) {
-      if (one.id %in% rownames(mm)) {
-        return(mm[one.id, ])
-      } else {
-        return("")
-      }
-    },
-    USE.NAMES = TRUE,
-    simplify = TRUE
+               function(one.id) {
+                 if (one.id %in% rownames(mm)) {
+                   return(mm[one.id, ])
+                 } else {
+                   return("")
+                 }
+               },
+               USE.NAMES = TRUE,
+               simplify = TRUE
   )
   return(rr)
 }
